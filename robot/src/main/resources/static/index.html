@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html ng-app='app'>
+<head>
+<title>Idealo Robot</title>
+<link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<link href="/main.css" rel="stylesheet">
+<script src="/webjars/jquery/jquery.min.js"></script>
+<script src="/webjars/angularjs/1.6.9/angular.min.js"></script>
+<script src="/app.js"></script>
+</head>
+<body>
+	<noscript>
+		<h2 style="color: #ff0000">Seems your browser doesn't support
+			Javascript! Please enable Javascript and reload this page!</h2>
+	</noscript>
+	<div id="main-content" class="container"
+		ng-controller="robotController">
+		<div class="row">
+			<div class="col-md-6">
+				<div class="form-group" data-ng-init="drawRobot()">
+
+					<canvas id="robotTabletopCanvas" width="300" height="300"
+					style="border:1px solid #c3c3c3;">
+					Your browser does not support the canvas element.
+					</canvas>
+				</div>
+
+			</div>
+			<div class="col-md-6">
+			<div class="panel-heading">
+						<h3 class="panel-title">Idealo Robot Coding Challenge</h3>
+					</div>
+				<div class="panel panel-default">
+					<div class="panel-body">
+						<form>
+							<div class="form-group">
+								<lebel ng-model="move_script" text="abc" id = "script-data" class="" placeholder="Script">{{move_script}}</lebel> 
+							</div>
+							<button ng-click="updateRobot()" class="btn btn-default"
+								type="submit">Move Robot</button>
+						</form>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+</body>
+</html>

@@ -9,21 +9,22 @@ import com.idealo.robot.constants.Constants;
 import com.idealo.robot.model.Commands;
 import com.idealo.robot.model.Direction;
 import com.idealo.robot.model.Robot;
+import com.idealo.robot.model.RobotDTO;
 
 @RestController
 @RequestMapping("/v1/robots")
 public class RobotController {
 
 	@PostMapping("/control")
-	public Robot controlRobot(@RequestParam String script) {
-		String[] commands = script.split("\\r?\\n");
+	public RobotDTO controlRobot(@RequestParam String script) {
+		String[] commands = script.split("\\r|\\n|<br>");
 		Robot robot = null;
 		for (String command : commands) {
-			if (command.contains("\"//\""));
+			if (command.contains("//"))
 				command = command.substring(0, command.indexOf("//"));
 			
 			String[] input = command.split(" ");
-			Commands currentCommand = Commands.valueOf(input[0]);
+			Commands currentCommand = Commands.valueOf(input[0].trim());
 			switch (currentCommand) {
 			case POSITION:
 				robot = new Robot(Integer.valueOf(input[1]), Integer.valueOf(input[2]), Direction.valueOf(input[3]));
@@ -52,7 +53,7 @@ public class RobotController {
 			}
 
 		}
-		return robot;
+		return new RobotDTO(robot.getX(), robot.getY(), robot.getDirection());
 	}
 
 	private Robot moveForward(Robot robot, Integer unit) {
@@ -61,30 +62,30 @@ public class RobotController {
 		case EAST:
 			result = robot.getY() + unit;
 			if (result > Constants.Y_MAX)
-				throw new IllegalArgumentException("Invalid co-ordinated provided for the robot");
+				throw new IllegalArgumentException("Invalid co-ordinates provided for the robot");
 			robot.setY(result);
 			break;
 
 		case WEST:
 			result = robot.getY() - unit;
 			if (result < Constants.Y_MIN)
-				throw new IllegalArgumentException("Invalid co-ordinated provided for the robot");
+				throw new IllegalArgumentException("Invalid co-ordinates provided for the robot");
 
 			robot.setY(result);
 			break;
 
 		case SOUTH:
-			result = robot.getX() + unit;
+			result = robot.getX() - unit;
 			if (result > Constants.X_MAX)
-				throw new IllegalArgumentException("Invalid co-ordinated provided for the robot");
+				throw new IllegalArgumentException("Invalid co-ordinates provided for the robot");
 			robot.setX(result);
 			break;
 
 		case NORTH:
-			result = robot.getY() - unit;
+			result = robot.getX() + unit;
 			if (result < Constants.X_MIN)
-				throw new IllegalArgumentException("Invalid co-ordinated provided for the robot");
-			robot.setY(result);
+				throw new IllegalArgumentException("Invalid co-ordinates provided for the robot");
+			robot.setX(result);
 			break;
 
 		default:

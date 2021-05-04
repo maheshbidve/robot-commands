@@ -1,6 +1,6 @@
 package com.idealo.robot.model;
 
-import lombok.NonNull;
+import org.springframework.lang.NonNull;
 
 public class Robot {
 	
@@ -14,6 +14,7 @@ public class Robot {
 		this.direction = direction;
 	}
 
+	public Robot() {};
 	public Integer getX() {
 		return x;
 	}
